@@ -1,4 +1,8 @@
+import string
 import pygame
+import typing
+
+from network import Network
 
 width = 500
 height = 500
@@ -33,27 +37,47 @@ class Player():
         if keys[pygame.K_DOWN]:
             self.y += self.vel
 
+        self.update()
+
+    def update(self):
         self.rect = (self.x, self.y, self.width, self.height)
 
-def redrawWindow(player:Player):
+def read_pos(str):
+    str = str.split(",")
+    return int(str[0]), int(str[1])
+
+def make_pos(tup):
+    return str(tup[0]) + "," + str(tup[1])
+
+def redrawWindow(player:Player, player2:Player):
     win.fill((255,255,255))
     player.draw(win)
+    player2.draw(win)
     pygame.display.update()
 
 
 def main():
     run = True
-    p = Player(50,50,100,100,(0,255,0))
+    n = Network()
+    start_pos = read_pos(n.get_pos())
+    
+    p = Player(start_pos[0],start_pos[1],100,100,(0,255,0))
+    p2 = Player(0,0,100,100,(0,255,0))
     clock = pygame.time.Clock()
 
     while run:
         clock.tick(60)
+        p2_pos = read_pos(n.send(make_pos((p.x, p.y))))
+        p2.x = p2_pos[0]
+        p2.y = p2_pos[1]
+        p2.update()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
 
         p.move()
-        redrawWindow(p)
+        redrawWindow(p, p2)
 
 main()
