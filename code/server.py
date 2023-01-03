@@ -1,16 +1,8 @@
 import socket
 from _thread import *
-import string
-import typing
-import sys
+import pickle
 
-def read_pos(str):
-    str = str.split(",")
-    return int(str[0]), int(str[1])
-
-def make_pos(tup:typing.Tuple):
-    return str(tup[0]) + "," + str(tup[1])
-
+from player import Player
 
 server = "192.168.100.59"
 port = 5555
@@ -33,34 +25,32 @@ print("Waiting for a connection, Server Started")
 
 
 # an element for each player
-players_start_pos = [(0,0), (100,100)]
-players_pos = players_start_pos
+players = [Player(0,0,50,50,(255,0,0)), Player(100,100,50,50,(0,0,255))]
 
 def threaded_client(conn:socket.socket, player):
-    conn.send(str.encode(make_pos(players_start_pos[player])))
+    conn.send(pickle.dumps(players[player]))
     reply = ""
 
     while True:
         try:
-            data = conn.recv(2048).decode()
-            print("hilo#"+str(player)+": data recibida:"+str(data))
-            data = read_pos(data)
+            data = pickle.loads(conn.recv(2048))
+            #print("hilo#"+str(player)+": data recibida:"+str(data))
 
-            players_pos[player] = data
+            players[player] = data
 
             if not data:
                 print("Disconnected")
                 break
             else:
                 if player == 1:
-                    reply = players_pos[0]
+                    reply = players[0]
                 else:
-                    reply = players_pos[1]
+                    reply = players[1]
 
-                print("Recieved: ", data)
-                print("Sending : ", reply)
+                #print("Recieved: ", data)
+                #print("Sending : ", reply)
 
-            conn.sendall(str.encode(make_pos(reply)))
+            conn.sendall(pickle.dumps(reply))
 
         except error as e:
             print(e)
