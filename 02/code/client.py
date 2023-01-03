@@ -21,7 +21,7 @@ class Button:
     def draw(self, win:pygame.Surface):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
         font = pygame.font.SysFont("comicsans", 30)
-        text = font.render(self.text, 1, (255,255,255))
+        text = font.render(self.text, 1, (149, 125, 173))
         win.blit(text, 
                 (self.x + round(self.width/2) - round(text.get_width()/2),
                  self.y + round(self.height/2) - round(text.get_height()/2)))
@@ -35,7 +35,7 @@ class Button:
             return False
 
 def redrawWindow(win:pygame.Surface, game:Game, player_id):
-    win.fill((255,255,255))
+    win.fill((255, 223, 211))
     
     if not(game.connected()):
         font = pygame.font.SysFont("comicsans", 30)
@@ -43,31 +43,31 @@ def redrawWindow(win:pygame.Surface, game:Game, player_id):
         win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
     else:
         font = pygame.font.SysFont("comicsans", 20)
-        text = font.render("Your Move", 1, (0,255,255),)
+        text = font.render("Your Move", 1, (224, 187, 228),)
         win.blit(text, (80, 200))
 
-        text = font.render("Opponent's Move", 1, (0,255,255))
+        text = font.render("Opponent's Move", 1, (224, 187, 228))
         win.blit(text, (380, 200))
 
         move1 = game.get_player_move(0)
         move2 = game.get_player_move(1)
         if game.both_went():
-            text1 = font.render(move1, 1, (0,0,0))
-            text2 = font.render(move2, 1, (0,0,0))
+            text1 = font.render(move1, 1, (254, 200, 216))
+            text2 = font.render(move2, 1, (254, 200, 216))
         else:
             if game.p1_went and player_id == 0:
-                text1 = font.render(move1, 1, (0,0,0))
+                text1 = font.render(move1, 1, (254, 200, 216))
             elif game.p1_went:
-                text1 = font.render("Locked In", 1, (0,0,0))
+                text1 = font.render("Locked In", 1, (254, 200, 216))
             else:
-                text1 = font.render("Waiting...", 1, (0,0,0))
+                text1 = font.render("Waiting...", 1, (254, 200, 216))
 
             if game.p2_went and player_id == 1:
-                text2 = font.render(move2, 1, (0,0,0))
+                text2 = font.render(move2, 1, (254, 200, 216))
             elif game.p2_went:
-                text2 = font.render("Locked In", 1, (0,0,0))
+                text2 = font.render("Locked In", 1, (254, 200, 216))
             else:
-                text2 = font.render("Waiting...", 1, (0,0,0))
+                text2 = font.render("Waiting...", 1, (254, 200, 216))
 
         if player_id == 1:
             win.blit(text2, (100, 350))
@@ -83,7 +83,7 @@ def redrawWindow(win:pygame.Surface, game:Game, player_id):
 
 
 
-btns = [Button("Rock", 50, 500, (0,0,0)), Button("Scissors", 250, 500, (255,0,0)), Button("Paper", 450, 500, (0,255,0))]
+btns = [Button("Rock", 50, 500, (224, 187, 228)), Button("Scissors", 250, 500, (210, 145, 188)), Button("Paper", 450, 500, (254, 200, 216))]
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -146,9 +146,9 @@ def menu_screen():
     
     while run:
         clock.tick(60)
-        win.fill((128,128,128))
-        font = pygame.font.SysFont("comicsans", 60)
-        text = font.render("Click to play!", 1, (255,0,0))
+        win.fill((255, 223, 211))
+        font = pygame.font.SysFont("timesnewroman", 60)
+        text = font.render("Click to play!", 1, (224, 187, 228))
         win.blit(text, (100,200))
         pygame.display.update()
 
