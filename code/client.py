@@ -62,7 +62,7 @@ def main():
     start_pos = read_pos(n.get_pos())
     
     p = Player(start_pos[0],start_pos[1],100,100,(0,255,0))
-    p2 = Player(0,0,100,100,(0,255,0))
+    p2 = Player(0,0,100,100,(255,0,0))
     clock = pygame.time.Clock()
 
     while run:
